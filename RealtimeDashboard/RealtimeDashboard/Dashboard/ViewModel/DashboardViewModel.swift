@@ -13,15 +13,18 @@ import FirebaseDatabase
 
 class DashboardViewModel: ObservableObject {
 
+    //Lists of Dashboard items
     @Published var hotList: [Item] = []
     @Published var newList: [Item] = []
 
+    //DB helpers
     private var hotlistDB = Database.database().reference().child("hot_list")
     private var newlistDB = Database.database().reference().child("new_list")
     private var cancellables: Set<AnyCancellable> = []
     private var dataSubjectHotList = PassthroughSubject<DataSnapshot, Never>()
     private var dataSubjectNewList = PassthroughSubject<DataSnapshot, Never>()
 
+    //Observes and updates Hot List from DB
     func observeDataChangesHotList() {
         hotlistDB.observe(.value) { snapshot in
             self.dataSubjectHotList.send(snapshot)
@@ -42,6 +45,7 @@ class DashboardViewModel: ObservableObject {
             .assign(to: &$hotList)
     }
 
+    //Observes and updates New List from DB
     func observeDataChangesNewList() {
         newlistDB.observe(.value) { snapshot in
             self.dataSubjectNewList.send(snapshot)
@@ -62,6 +66,8 @@ class DashboardViewModel: ObservableObject {
             .assign(to: &$newList)
     }
 
+    // Optional methods: If want to add/delete items
+    
     func addHotItem(name: String, description: String) {
         let newItemRef = hotlistDB.childByAutoId()
         let newItem = ["name": name, "description": description]

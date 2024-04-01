@@ -54,7 +54,6 @@ struct ContentView: View {
                             viewModel.deleteNewItem(at: indexSet)
                         })
                     }
-
                 }
             }
             .navigationTitle("Welcome to Dashboard")
